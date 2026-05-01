@@ -6,18 +6,18 @@ description: >
   and adversarial guards that agents skip unprompted. Trigger on: constrained optimization,
   KKT conditions, Lagrange multipliers, ALM, ADMM, shadow prices, infeasibility diagnosis,
   safe RL constraints, multi-objective Pareto, Bayesian-optimization hybrids, or any problem
-  with equality/inequality constraints. Also trigger for: sensitivity analysis,
-  near-infeasible problems, non-convex landscapes, adversarial perturbations, or natural
-  language problem specs.
+  with equality/inequality constraints. Also trigger for: sensitivity analysis, near-infeasible
+  problems, non-convex landscapes, adversarial perturbations, or natural language problem specs.
 license: MIT
 metadata:
   version: "0.9.3"
   stage: stable
   success_rate: "96.78%"
-  token_budget: "≤1.13x"
+  token_budget: "<=1.13x"
 ---
 
 # Lagrangian Core Skill — v0.9.3
+# Token <=1.13x | 成功率目标 98.5% | 文档 <=150行
 
 ## 能力边界
 支持: 凸QP | 光滑NLP | 非凸NLP | 分布式ADMM | Safe RL | 多目标
@@ -65,7 +65,7 @@ FIX-23 → "⚠️ COOP压力场景：{策略名}已激活"
 批量澄清: ≥2个模糊点→合并单轮确认表(-0.12x)；澄清后增量更新解析树。
 
 | 边界类型 | 触发词              | 处理方式                  |
-|---------|--------------------|--------------------------|
+|---------|--------------------|--------------------------| 
 | 定性目标 | 公平/均衡/合理/尽量 | Max-Min/基尼/等比例选项   |
 | 模糊数值 | 大约/左右/差不多   | 严格上限/软约束/范围选项   |
 | OR约束  | 或/至少一个/二选一  | MIP/smooth_max/拆分选项   |
