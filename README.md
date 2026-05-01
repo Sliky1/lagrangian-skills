@@ -1,11 +1,11 @@
-# lagrangian-skill
+# lagrangian-skills
 
 An opinionated [Agent Skill](https://agentskills.io/specification) for constrained optimization using Augmented Lagrangian Methods (ALM), ADMM, and KKT-based verification. Compatible with Claude Code, Cursor, Gemini CLI, and any agent that supports the Agent Skills spec.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.9.3-blue.svg)](lagrangian-core/SKILL.md)
+[![Version](https://img.shields.io/badge/version-v0.9.3-blue.svg)](lagrangian/SKILL.md)
 [![Success Rate](https://img.shields.io/badge/success%20rate-96.78%25-brightgreen.svg)](evals/)
-[![Releases](https://img.shields.io/github/v/release/Sliky1/lagrangian-skill)](https://github.com/Sliky1/lagrangian-skill/releases)
+[![Releases](https://img.shields.io/github/v/release/Sliky1/lagrangian-skills)](https://github.com/Sliky1/lagrangian-skills/releases)
 
 ## What this skill does
 
@@ -26,23 +26,23 @@ Key behaviors the agent won't do unprompted — but this skill enforces:
 ### Claude Code
 
 ```bash
-git clone https://github.com/Sliky1/lagrangian-skill.git /tmp/lagrangian-skill
+git clone https://github.com/Sliky1/lagrangian-skills.git /tmp/lagrangian-skills
 mkdir -p ~/.claude/skills
-cp -r /tmp/lagrangian-skill/lagrangian-core ~/.claude/skills/
+cp -r /tmp/lagrangian-skills/lagrangian ~/.claude/skills/
 ```
 
 ### Other compatible agents
 
 ```bash
-git clone https://github.com/Sliky1/lagrangian-skill.git /tmp/lagrangian-skill
-cp -r /tmp/lagrangian-skill/lagrangian-core/ ~/.config/agents/skills/lagrangian-core/
+git clone https://github.com/Sliky1/lagrangian-skills.git /tmp/lagrangian-skills
+cp -r /tmp/lagrangian-skills/lagrangian/ ~/.config/agents/skills/lagrangian/
 ```
 
 ## Skill
 
 | Skill | Description |
 |---|---|
-| [lagrangian-core](lagrangian-core/) | Constrained optimization via ALM/ADMM/KKT. Handles convex QP, smooth NLP, non-convex NLP, distributed ADMM, Safe RL, and multi-objective problems. |
+| [lagrangian](lagrangian/) | Constrained optimization via ALM/ADMM/KKT. Handles convex QP, smooth NLP, non-convex NLP, distributed ADMM, Safe RL, and multi-objective problems. |
 
 ## Supported problem types
 
@@ -58,13 +58,13 @@ cp -r /tmp/lagrangian-skill/lagrangian-core/ ~/.config/agents/skills/lagrangian-
 
 ## Latest release
 
-**[v0.9.3](https://github.com/Sliky1/lagrangian-skill/releases/tag/v0.9.3)** — 2026-05-01
+**[v0.9.3](https://github.com/Sliky1/lagrangian-skills/releases/tag/v0.9.3)** — 2026-05-01
 
 - **[FIX-22]** Dual-layer adversarial protection: `ensemble_vote` pre-detection + `adaptive_trust_region` projection
 - `non_convex+adversarial` success rate: 94.29% → **96.82%** (+2.53pp)
 - Language optimization: technical identifiers 100% English, behavioral rules Chinese
 
-Full release history → [Releases](https://github.com/Sliky1/lagrangian-skill/releases) · [CHANGELOG](CHANGELOG.md)
+Full release history → [Releases](https://github.com/Sliky1/lagrangian-skills/releases) · [CHANGELOG](CHANGELOG.md)
 
 ## Evals
 
@@ -88,8 +88,6 @@ The skill uses **Chinese for behavioral rules** and **English for technical iden
 | JSON / code blocks | **English** | Format specification is English |
 | Behavioral rules, Forbidden Behaviors, guardrails | **Chinese** | Chinese's topic-prominent structure allows expressing constraints without grammatical subjects, reducing token count by ~20–30% while eliminating subordinate clause ambiguity |
 | Numeric parameters (`thresh=0.010`) | **English** | Universal format |
-
-The result: English where precision of execution matters, Chinese where compactness of rules matters. Mixing is not arbitrary — it follows a strict assignment that optimizes both token efficiency and model attention simultaneously.
 
 ## Philosophy
 
