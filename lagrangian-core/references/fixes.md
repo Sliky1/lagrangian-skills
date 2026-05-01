@@ -24,17 +24,8 @@ Quick reference for all documented fixes and their parameter constraints.
 
 ## Ablation methodology
 
-All parameters confirmed by ablation:
-- N ≥ 2,000 simulations per config
-- Primary score = success_rate × 0.70 − token_extra × 2.0
-- Secondary score (sr-first) = success_rate × 0.85 − token_extra × 0.8
+All parameters confirmed by ablation experiment:
+- N ≥ 2,000 simulations per configuration
+- Score = success_rate × 0.70 − token_extra × 2.0
+- Secondary (success-rate-first): success_rate × 0.85 − token_extra × 0.8
 - Final benchmark: 20,000-call simulation per version
-
-## Language conventions
-
-| Content type | Language | Reason |
-|---|---|---|
-| Technical identifiers / algorithm names / parameter names | English | Training corpus is English; higher attention weight on technical vocabulary |
-| JSON / code blocks | English | Format spec is English |
-| Behavioral rules / Forbidden Behaviors | Chinese | Higher information density; no subordinate clause ambiguity |
-| Numeric parameters (`thresh=0.010`) | English | Universal format |

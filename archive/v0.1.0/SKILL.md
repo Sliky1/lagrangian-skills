@@ -2,8 +2,7 @@
 name: lagrangian-core
 description: >
   Augmented Lagrangian method for constrained optimization. Handles convex QP,
-  smooth NLP, and basic non-convex problems. Trigger on: constrained optimization,
-  KKT conditions, Lagrange multipliers, penalty methods, equality/inequality constraints.
+  smooth NLP, and basic non-convex problems.
 license: MIT
 metadata:
   version: "0.1.0"
@@ -26,16 +25,10 @@ L_ρ = f(x) + Σλ·h(x) + Σμ·g(x) + ρ/2·||h||²
 2. 内层: min_x L_ρ(x, λ, μ) → x*
 3. 更新乘子: λ ← λ + ρ·h(x*), μ ← max(0, μ + ρ·g(x*))
 4. 更新惩罚: ρ ← 1.5ρ if ||h||>tol
-5. 收敛判断: ||h(x*)||<1e-6 且 ||∇L||<1e-6
+5. 收敛: ||h(x*)||<1e-6 且 ||∇L||<1e-6
 
 ## KKT条件验证
-∇f + Σλ∇h + Σμ∇g = 0
-h(x*) = 0, g(x*) ≤ 0
-μ ≥ 0, μ·g(x*) = 0
+∇f + Σλ∇h + Σμ∇g = 0; h(x*)=0; g(x*)≤0; μ≥0; μ·g(x*)=0
 
-## 输出格式
+## 输出
 最优解 x*, 目标值 f(x*), KKT残差, 约束状态
-
-## Forbidden Behaviors
-❌ Steps 1-6输出自然语言
-❌ 失败后输出散文

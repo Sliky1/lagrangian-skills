@@ -1,10 +1,11 @@
-# lagrangian-core-skill
+# lagrangian-skill
 
 An opinionated [Agent Skill](https://agentskills.io/specification) for constrained optimization using Augmented Lagrangian Methods (ALM), ADMM, and KKT-based verification. Compatible with Claude Code, Cursor, Gemini CLI, and any agent that supports the Agent Skills spec.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-v0.9.3-blue.svg)](lagrangian-core/SKILL.md)
 [![Success Rate](https://img.shields.io/badge/success%20rate-96.78%25-brightgreen.svg)](evals/)
+[![Releases](https://img.shields.io/github/v/release/Sliky1/lagrangian-skill)](https://github.com/Sliky1/lagrangian-skill/releases)
 
 ## What this skill does
 
@@ -25,16 +26,16 @@ Key behaviors the agent won't do unprompted — but this skill enforces:
 ### Claude Code
 
 ```bash
-git clone https://github.com/Sliky1/lagrangian-core-skill.git /tmp/lagrangian-core-skill
+git clone https://github.com/Sliky1/lagrangian-skill.git /tmp/lagrangian-skill
 mkdir -p ~/.claude/skills
-cp -r /tmp/lagrangian-core-skill/lagrangian-core ~/.claude/skills/
+cp -r /tmp/lagrangian-skill/lagrangian-core ~/.claude/skills/
 ```
 
 ### Other compatible agents
 
 ```bash
-git clone https://github.com/Sliky1/lagrangian-core-skill.git /tmp/lagrangian-core-skill
-cp -r /tmp/lagrangian-core-skill/lagrangian-core/ ~/.config/agents/skills/lagrangian-core/
+git clone https://github.com/Sliky1/lagrangian-skill.git /tmp/lagrangian-skill
+cp -r /tmp/lagrangian-skill/lagrangian-core/ ~/.config/agents/skills/lagrangian-core/
 ```
 
 ## Skill
@@ -55,23 +56,17 @@ cp -r /tmp/lagrangian-core-skill/lagrangian-core/ ~/.config/agents/skills/lagran
 | Bayesian-optimization hybrid | Cross-skill COOP | COOP-1/2/3 |
 | Natural language / degenerate | ALM + Tikhonov regularization | FIX-19 |
 
-## Version history
+## Latest release
 
-| Version | Date | Highlights |
-|---|---|---|
-| [v0.9.3](archive/v0.9.3/SKILL.md) | 2026-05-01 | **FIX-22** dual-layer adversarial protection (ensemble_vote + adaptive_trust_region); language optimization |
-| [v0.9.2](archive/v0.9.2/SKILL.md) | 2026-05-01 | **FIX-21v2** Halton quasi-random multi-start |
-| [v0.9.1](archive/v0.9.1/SKILL.md) | 2026-05-01 | **FIX-19** Tikhonov regularization; **FIX-23** mixed-Bayes pressure scenarios; UX batch disambiguation |
-| [v0.9.0](archive/v0.9.0/SKILL.md) | 2026-05-01 | COOP cross-skill protocol; session state persistence; incremental re-parsing |
-| [v0.8.0](archive/v0.8.0/SKILL.md) | 2026-04-30 | Output modes (MINIMAL/STANDARD/VERBOSE); shadow price folding; KKT cache |
-| [v0.7.0](archive/v0.7.0/SKILL.md) | 2026-04-28 | Safe RL + multi-objective routing; FIX-16/17/18 |
-| [v0.5.0](archive/v0.5.0/SKILL.md) | 2026-04-20 | Multi-start non-convex; structured failure output |
-| [v0.3.0](archive/v0.3.0/SKILL.md) | 2026-04-10 | ADMM routing; sparse JSON channel |
-| [v0.1.0](archive/v0.1.0/SKILL.md) | 2026-04-01 | Prototype: basic ALM + KKT |
+**[v0.9.3](https://github.com/Sliky1/lagrangian-skill/releases/tag/v0.9.3)** — 2026-05-01
+
+- **[FIX-22]** Dual-layer adversarial protection: `ensemble_vote` pre-detection + `adaptive_trust_region` projection
+- `non_convex+adversarial` success rate: 94.29% → **96.82%** (+2.53pp)
+- Language optimization: technical identifiers 100% English, behavioral rules Chinese
+
+Full release history → [Releases](https://github.com/Sliky1/lagrangian-skill/releases) · [CHANGELOG](CHANGELOG.md)
 
 ## Evals
-
-Benchmark results for the current skill version vs. no-skill baseline:
 
 | Scenario | With skill | Without skill |
 |---|---|---|
@@ -81,15 +76,26 @@ Benchmark results for the current skill version vs. no-skill baseline:
 | mixed_bayes + adversarial | 96.0% | ~60% |
 | natural_lang + degenerate | 95.2% | ~55% |
 
-Full eval scenarios are in [evals/](evals/).
+Full eval details → [evals/](evals/)
+
+## Why the skill is written in mixed Chinese and English
+
+The skill uses **Chinese for behavioral rules** and **English for technical identifiers**. This is a deliberate design choice, not an accident:
+
+| Content type | Language | Reason |
+|---|---|---|
+| Algorithm names, parameter names, JSON keys | **English** | The model's training corpus for optimization algorithms is almost entirely English — using English identifiers directly activates the relevant knowledge with higher attention weight |
+| JSON / code blocks | **English** | Format specification is English |
+| Behavioral rules, Forbidden Behaviors, guardrails | **Chinese** | Chinese's topic-prominent structure allows expressing constraints without grammatical subjects, reducing token count by ~20–30% while eliminating subordinate clause ambiguity |
+| Numeric parameters (`thresh=0.010`) | **English** | Universal format |
+
+The result: English where precision of execution matters, Chinese where compactness of rules matters. Mixing is not arbitrary — it follows a strict assignment that optimizes both token efficiency and model attention simultaneously.
 
 ## Philosophy
 
 This skill is **workflow-first and guardrail-heavy**. It doesn't just remind the agent that ALM exists — it enforces step ordering, input validation, solver routing, and output structure that agents skip when left to their own judgment.
 
-Each FIX is a documented regression addressed by ablation experiment, not a heuristic tweak. All parameter choices (Halton threshold=0.010, proj_radius=0.10, cos_thresh=0.10) are backed by simulation data in [evals/ablation/](evals/ablation/).
-
-Language conventions: technical identifiers and JSON are English; behavioral rules and guardrails are Chinese. This maximizes token efficiency and model attention weight on technical vocabulary simultaneously.
+Each FIX is a documented regression addressed by ablation experiment, not a heuristic tweak. All parameter choices (`Halton thresh=0.010`, `proj_radius=0.10`, `cos_thresh=0.10`) are backed by simulation data in [evals/ablation/](evals/ablation/).
 
 ## License
 
