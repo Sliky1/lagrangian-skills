@@ -1,18 +1,20 @@
 ---
 name: lagrangian-core
 description: >
-  Lagrangian Core Skill v0.9.3 (current stable) — adds FIX-22 dual-layer adversarial
-  protection (ensemble_vote detection + adaptive_trust_region projection) and language
-  optimization (technical identifiers English, behavioral rules Chinese).
+  Opinionated constrained optimization skill using Augmented Lagrangian Methods (ALM),
+  ADMM, and KKT verification. Enforces step ordering, solver routing, feasibility checks,
+  and adversarial guards that agents skip unprompted. Trigger on: constrained optimization,
+  KKT conditions, Lagrange multipliers, ALM, ADMM, shadow prices, infeasibility diagnosis,
+  safe RL constraints, multi-objective Pareto, Bayesian-optimization hybrids, or any problem
+  with equality/inequality constraints. Also trigger for: sensitivity analysis, near-infeasible
+  problems, non-convex landscapes, adversarial perturbations, or natural language problem specs.
 license: MIT
 metadata:
   version: "0.9.3"
   stage: stable
   success_rate: "96.78%"
-  token_budget: "<=1.13x"
+  token_budget: "≤1.13x"
 ---
-
-> **This is the current stable version.** See [../../lagrangian-core/SKILL.md](../../lagrangian-core/SKILL.md) for the canonical copy.
 
 # Lagrangian Core Skill — v0.9.3
 # Token ≤1.13x | 成功率目标 98.5% | 文档 ≤150行
@@ -54,7 +56,35 @@ FIX-19 → "⚠️ 退化结构，已正则化(ε=1e-4)"
 FIX-22 → "⚠️ 对抗性鞍点：双层防护已激活"
 FIX-23 → "⚠️ COOP压力场景：{策略名}已激活"
 
-## Step 5 — 求解路由
+## Step 0 — 混合检测 + 批量澄清 [COOP-1, UX-2b/2c]
+贝叶斯信号词: 先验|后验|似然|贝叶斯|概率分布|prior|posterior|likelihood
+统计信号词:   均值|方差|回归|相关系数|假设检验
+→ 贝叶斯+优化: MIXED_BAYES_OPT → 抛出子任务(COOP-2)
+→ 纯贝叶斯:   HALT "请调用贝叶斯Skill"
+
+批量澄清: ≥2个模糊点→合并单轮确认表(-0.12x)；澄清后增量更新解析树。
+
+| 边界类型 | 触发词              | 处理方式                 |
+|---------|--------------------|--------------------------|
+| 定性目标 | 公平/均衡/合理/尽量 | Max-Min/基尼/等比例选项  |
+| 模糊数值 | 大约/左右/差不多   | 严格上限/软约束/范围选项  |
+| OR约束  | 或/至少一个/二选一  | MIP/smooth_max/拆分选项  |
+| 单位歧义 | 混合量纲           | 展示解析表请用户确认      |
+| 条件逻辑 | 如果则/当时/第X期  | 合并/MIP/惩罚项选项      |
+
+## Step 3 — 稀疏JSON通道 [TOK-7/11]
+只输出非默认字段:
+```json
+{"step":3,"type":"augmented_lagrangian",
+ "formula":"L_ρ=f(x)+Σλ·h(x)+Σμ·g(x)+ρ/2·||h||²",
+ "multipliers":{"lambda":[0.0],"mu":[0.0]},
+ "penalty":{"rho_init":1.0,"update_rule":"×1.5 if ||h||>tol"}}
+```
+
+## Step 4 — KKT验证 + 缓存 [TOK-10/15]
+指纹=(变量数, eq约束数, ineq约束数, 目标函数类型, 约束结构哈希); 命中率~85%
+
+## Step 5 — 求解路由 [FIX-16~23]
 ```
 safe_rl+adversarial     → cos_thresh=0.10, window=20
 safe_rl+near_infeas     → ratio_thresh=3.0, n_stages=6, stage_step=0.25
@@ -67,6 +97,33 @@ non_convex+normal       → ALM(n_starts=10, warm_start=cache)
 convex_qp/smooth_nlp    → standard_solver
 distributed             → ADMM
 ```
+非凸问题Step 1只输出结论。[TOK-17]
+
+## Step 6 — 影子价格 [TOK-12]
+默认只输出活跃约束(影子价格>0)；其余折叠"[展开]"。
+
+## Step 7 — 自然语言渲染 [TOK-7]
+STANDARD: 最优解(一行) → 约束状态表(仅活跃) → 关键瓶颈(一句) → FIX标注
+VERBOSE:  STANDARD + Steps 3-6 JSON原始数据
+非凸局部最优 → "已验证N起点，当前解优于X%起点。" [UX-8]
+
+## COOP-2/3 — 跨Skill协同
+```json
+{"status":"AWAITING_EXTERNAL",
+ "subtask_for_external_skill":{"type":"bayesian_inference","input":"<子任务>",
+   "output_format":{"posterior_params":"dict","confidence":"float 0-1"}},
+ "merge_instruction":"posterior_params staged方式注入优化参数"}
+```
+基础合并: conf=soft_linear | unit_norm=domain_aware(不可省) | conflict=conservative_min
+压力覆盖: near_infeasible→slack_buffer | adversarial→confidence_floor(0.6)
+
+## 失败处理 [UX-5/6, TOK-14]
+```json
+{"status":"FAILED","error_code":"INFEASIBLE|BAD_PARAMS|AMBIGUOUS|SOLVER_FAIL|OUT_OF_SCOPE",
+ "reason":"<一行说明>","recovery":"<修复建议或最小松弛量>"}
+```
+近不可行→自动计算最小松弛量写入recovery。[UX-6]
+反事实分析（用户请求时）。[UX-7]
 
 ## Forbidden Behaviors
 ❌ Steps 1-6输出自然语言 | ❌ Step 7输出JSON给用户
