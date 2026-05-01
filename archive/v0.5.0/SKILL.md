@@ -17,10 +17,11 @@ metadata:
 支持: 凸QP | 光滑NLP | 非凸NLP | 分布式ADMM | Safe RL | 多目标
 协同: 检测贝叶斯/统计成分→HALT并建议调用对应Skill
 不支持: 纯贝叶斯 | 纯统计检验 | MIP
+
 输出模式: MINIMAL | STANDARD(默认) | VERBOSE
 
 ## Step -1 — 预检 (4项并行)
-1. 变量类型  2. 约束可行性(LP松弛)  3. 问题规模  4. 量纲一致性
+1. 变量类型  2. 约束可行性  3. 问题规模  4. 量纲一致性
 HALT条件 → 立即停止，输出错误码
 
 ## Step 0 — 澄清
@@ -57,10 +58,10 @@ VERBOSE:  STANDARD + Steps 3-6 JSON
 ## 失败处理
 ```json
 {"status":"FAILED","error_code":"INFEASIBLE|BAD_PARAMS|AMBIGUOUS|SOLVER_FAIL",
- "reason":"<一行>","recovery":"<修复建议或最小松弛量>"}
+ "reason":"<一行>","recovery":"<修复建议>"}
 ```
 
 ## Forbidden Behaviors
-❌ Steps 1-6输出自然语言 | ❌ Step 7输出JSON给用户
+❌ Steps 1-6输出自然语言 | ❌ Step 7输出JSON
 ❌ 语言边界直接HALT | ❌ 失败后输出散文
 ❌ FIX-16: cos_thresh>0.20或window<15

@@ -31,11 +31,12 @@ distributed          → ADMM
  "penalty":{"rho_init":1.0,"update_rule":"×1.5 if ||h||>tol"}}
 ```
 
-## Step 4 — KKT验证 + 缓存
-指纹=(变量数, eq约束数, ineq约束数, 目标函数类型)
+## Step 4 — KKT验证
+缓存指纹=(变量数, eq约束数, ineq约束数, 目标函数类型)
 
 ## Step 7 — 输出
 最优解(一行) → 约束状态 → KKT残差
 
 ## Forbidden Behaviors
-❌ Steps 1-6输出自然语言 | ❌ 失败后输出散文
+❌ Steps 1-6输出自然语言
+❌ 失败后输出散文
