@@ -1,13 +1,19 @@
 ---
-name: lagrangian-core
+name: lagrangian
 description: >
-  Opinionated constrained optimization skill using Augmented Lagrangian Methods (ALM),
-  ADMM, and KKT verification. Enforces step ordering, solver routing, feasibility checks,
-  and adversarial guards that agents skip unprompted. Trigger on: constrained optimization,
-  KKT conditions, Lagrange multipliers, ALM, ADMM, shadow prices, infeasibility diagnosis,
-  safe RL constraints, multi-objective Pareto, Bayesian-optimization hybrids, or any problem
-  with equality/inequality constraints. Also trigger for: sensitivity analysis, near-infeasible
-  problems, non-convex landscapes, adversarial perturbations, or natural language problem specs.
+  Constrained optimization skill — use when the task involves maximizing or minimizing
+  something under budgets, capacities, safety limits, equality/inequality constraints,
+  or trade-off requirements. Implements ALM, ADMM, and KKT verification with adversarial
+  guards and solver routing that agents skip unprompted.
+when_to_use: >
+  Trigger on natural-language requests like: “在预算限制下最大化收益”, “资源怎么分配最合理”,
+  “有上限/下限/容量限制怎么优化”, “满足若干约束时求最优解”, “这个问题可行吗”,
+  “影子价格是什么”, “约束不可行怎么办”, “多个目标怎么平衡”.
+  Also trigger on technical terms: KKT conditions, Lagrange multipliers, ALM, ADMM,
+  shadow prices, infeasibility diagnosis, safe RL constraints, multi-objective Pareto,
+  Bayesian-optimization hybrids, non-convex landscapes, near-infeasible problems.
+model: inherit
+effort: high
 license: MIT
 metadata:
   version: "0.9.3"
@@ -16,7 +22,7 @@ metadata:
   token_budget: "<=1.13x"
 ---
 
-# Lagrangian Core Skill — v0.9.3
+# Lagrangian Skill — v0.9.3
 # Token <=1.13x | 成功率目标 98.5% | 文档 <=150行
 
 ## 能力边界
