@@ -16,13 +16,13 @@ model: inherit
 effort: high
 license: MIT
 metadata:
-  version: "0.9.3"
+  version: "0.9.4"
   stage: stable
   success_rate: "96.78%"
   token_budget: "<=1.13x"
 ---
 
-# Lagrangian Skill — v0.9.3
+# Lagrangian Skill — v0.9.4
 # Token <=1.13x | 成功率目标 98.5% | 文档 <=150行
 
 ## 能力边界
@@ -79,7 +79,7 @@ FIX-23 → "⚠️ COOP压力场景：{策略名}已激活"
 | 条件逻辑 | 如果则/当时/第X期  | 合并/MIP/惩罚项选项       |
 
 ## Step 3 — 稀疏JSON通道 [TOK-7/11]
-只输出非默认字段:
+只输出非默认字桑:
 ```json
 {"step":3,"type":"augmented_lagrangian",
  "formula":"L_ρ=f(x)+Σλ·h(x)+Σμ·g(x)+ρ/2·||h||²",

@@ -3,7 +3,7 @@
 An opinionated [Agent Skill](https://agentskills.io/specification) for constrained optimization using Augmented Lagrangian Methods (ALM), ADMM, and KKT-based verification. Compatible with Claude Code, Cursor, Gemini CLI, and any agent that supports the Agent Skills spec.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.9.3-blue.svg)](lagrangian/SKILL.md)
+[![Version](https://img.shields.io/badge/version-v0.9.4-blue.svg)](lagrangian/SKILL.md)
 [![Success Rate](https://img.shields.io/badge/success%20rate-96.78%25-brightgreen.svg)](evals/)
 [![Releases](https://img.shields.io/github/v/release/Sliky1/lagrangian-skills)](https://github.com/Sliky1/lagrangian-skills/releases)
 
@@ -58,11 +58,11 @@ cp -r /tmp/lagrangian-skills/lagrangian/ ~/.config/agents/skills/lagrangian/
 
 ## Latest release
 
-**[v0.9.3](https://github.com/Sliky1/lagrangian-skills/releases/tag/v0.9.3)** — 2026-05-01
+**[v0.9.4](https://github.com/Sliky1/lagrangian-skills/releases/tag/v0.9.4)** — 2026-05-07
 
-- **[FIX-22]** Dual-layer adversarial protection: `ensemble_vote` pre-detection + `adaptive_trust_region` projection
-- `non_convex+adversarial` success rate: 94.29% → **96.82%** (+2.53pp)
-- Language optimization: technical identifiers 100% English, behavioral rules Chinese
+- Added `when_to_use` with natural-language trigger examples
+- Added `model: inherit` and `effort: high` frontmatter fields
+- `name` corrected to `lagrangian`; `description` restructured
 
 Full release history → [Releases](https://github.com/Sliky1/lagrangian-skills/releases) · [CHANGELOG](CHANGELOG.md)
 

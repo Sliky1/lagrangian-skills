@@ -2,6 +2,19 @@
 
 All notable changes to lagrangian-skills are documented here.
 
+## [v0.9.4] — 2026-05-07
+
+### Changed
+- `name` corrected from `lagrangian-core` → `lagrangian`
+- Added `when_to_use` field with 7 natural-language trigger examples (Chinese + English)
+- Added `model: inherit` and `effort: high` frontmatter fields
+- `description` restructured: business-scenario lead, technical terms follow
+- Title updated to `Lagrangian Skill — v0.9.4`
+
+> No changes to execution logic, FIX parameters, or solver routing.
+
+---
+
 ## [v0.9.3] — 2026-05-01
 
 ### Added
@@ -17,11 +30,6 @@ All notable changes to lagrangian-skills are documented here.
 - Language optimization: technical identifiers 100% English, behavioral rules Chinese
 - Removed explanatory Chinese comments from solver routing table (no execution value)
 - Compressed FIX-22 block annotations; doc reduced from 4,021 → 3,920 chars
-- **[2026-05-07]** SKILL.md spec improvements (no functional change):
-  - `name` corrected to `lagrangian`
-  - Added `when_to_use` with 7 natural-language trigger examples (Chinese + English)
-  - Added `model: inherit` and `effort: high` frontmatter fields
-  - `description` restructured: business-scenario lead, technical terms follow
 
 ### Fixed
 - `non_convex+adversarial` success rate: 94.29% → **96.82%** (+2.53pp)
@@ -52,7 +60,7 @@ All notable changes to lagrangian-skills are documented here.
 
 ### Fixed
 - `natural_lang+degenerate`: 85.6% → **95.2%** (+9.6pp)
-- `mixed_bayes+near_infeasible`: 87.4% → **97.6%** (+10.2pp)
+- `mixed_lang+degenerate`: 87.4% → **97.6%** (+10.2pp)
 
 ---
 
